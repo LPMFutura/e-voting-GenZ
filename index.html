@@ -40,7 +40,7 @@
   .hero { 
     position: relative; 
     background-color: var(--primary-dark);
-    background-image: linear-gradient(to right, rgba(10,37,28,0.95) 0%, rgba(10,37,28,0.7) 50%, rgba(10,37,28,0.2) 100%), url('https://images.unsplash.com/photo-1596404983362-e1c0c1b48b11?q=80&w=2000&auto=format&fit=crop'); 
+    background-image: linear-gradient(to right, rgba(10,37,28,0.95) 0%, rgba(10,37,28,0.7) 50%, rgba(10,37,28,0.2) 100%), url('background.png'); 
     background-size: cover; 
     background-position: center; 
     color: var(--white); 
@@ -73,12 +73,12 @@
   .link-all { font-size: 13px; color: var(--text-muted); font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 4px; }
 
   /* Candidate Grid */
-  .candidates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: clamp(12px, 2vw, 20px); }
-  .c-card { background: var(--bg-main); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); display: flex; flex-direction: column;}
-  .c-card .img-wrapper { position: relative; background: var(--primary-dark); aspect-ratio: 1; }
-  .c-card .img-wrapper img { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
+  .candidates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: clamp(10px, 1.8vw, 18px); }
+  .c-card { background: var(--bg-main); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); display: flex; flex-direction: column;}
+  .c-card .img-wrapper { position: relative; background: var(--primary-dark); aspect-ratio: 3 / 4; }
+  .c-card .img-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: center top; opacity: 0.95; }
   .c-card .badge { position: absolute; top: 8px; left: 8px; background: var(--gold-light); color: var(--primary-dark); font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; z-index: 2;}
-  .c-card .info { padding: 12px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;}
+  .c-card .info { padding: 10px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;}
   .c-card .name { font-family: 'Fraunces', serif; font-size: clamp(15px, 2.5vw, 17px); font-weight: 600; color: var(--primary-dark); margin-bottom: 4px; line-height: 1.2;}
   .c-card .tagline { font-size: 11px; color: var(--text-muted); line-height: 1.3; }
   .c-card .btn-vote { background: var(--primary-dark); color: var(--white); border: none; padding: 8px; border-radius: 24px; font-size: 12.5px; font-weight: 600; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; transition: 0.2s;}
@@ -133,7 +133,7 @@
   .summary-row { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 8px; }
   .summary-row.total { border-top: 1px dashed #ccc; padding-top: 12px; margin-top: 4px; font-weight: 700; font-size: 16px; color: var(--primary-dark); }
   .qr-container { background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 20px; }
-  .qr-container img { width: 140px; height: 140px; display: block; margin: 0 auto; }
+  .qr-container img { width: min(220px, 100%); height: auto; display: block; margin: 0 auto; }
   .modal-btn { background: var(--primary-dark); color: var(--white); border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; font-size: 14px; transition: 0.2s;}
   .modal-btn:hover { background: var(--primary-light); }
   .modal-btn-outline { background: transparent; color: var(--primary-dark); border: 1px solid var(--primary-dark); padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; font-size: 14px; margin-bottom: 10px; display: block; text-decoration: none;}
@@ -353,8 +353,9 @@
     </div>
 
     <div class="qr-container">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=PembayaranBalangan2026" alt="QRIS">
-      <div style="font-size: 12px; color: var(--text-muted); margin-top: 10px; font-weight: 500;">Scan QRIS ini untuk membayar</div>
+      <img src="qris.jpg" alt="QRIS">
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: 10px; font-weight: 500;">Scan QRIS ini untuk membayar atau</div>
+      <div style="font-size: 12px; color: var(--primary-dark); margin-top: 8px; font-weight: 600; line-height: 1.5;">BRI: 451701031991538<br>a.n. Muhammad Khairullah</div>
     </div>
 
     <p style="font-size: 12px; color: var(--primary-dark); margin-bottom: 15px; font-weight: 500; line-height: 1.4;">Harap catat ID Transaksi <strong>(<span id="trx-id-copy"></span>)</strong> sebelum membuka form di bawah.</p>
@@ -418,25 +419,25 @@
   const PRICE_PER_VOTE = 5000;
   
   let defaultCandidates = [
-    { id: 1, cat: "nanang", name: "Ahmad Fauzi", region: "Berakhlak, Berkarya, Untuk Balangan Maju", votes: 0, img: "https://ui-avatars.com/api/?name=Ahmad+Fauzi&background=0A251C&color=F6F1E2&size=256" },
-    { id: 2, cat: "nanang", name: "M. Rizky Pratama", region: "Bersama Membangun Generasi Emas Balangan", votes: 0, img: "https://ui-avatars.com/api/?name=Rizky+Pratama&background=0A251C&color=F6F1E2&size=256" },
-    { id: 3, cat: "nanang", name: "Hendra Saputra", region: "Kolaborasi untuk Balangan yang Lebih Baik", votes: 0, img: "https://ui-avatars.com/api/?name=Hendra+Saputra&background=0A251C&color=F6F1E2&size=256" },
-    { id: 4, cat: "nanang", name: "Rizki Maulana", region: "Inovasi, Integritas, Untuk Masa Depan", votes: 0, img: "https://ui-avatars.com/api/?name=Rizki+Maulana&background=0A251C&color=F6F1E2&size=256" },
-    { id: 5, cat: "nanang", name: "Nanang Akid", region: "Mewujudkan Pemuda Kreatif", votes: 0, img: "https://ui-avatars.com/api/?name=Akid&background=0A251C&color=F6F1E2&size=256" },
-    { id: 6, cat: "nanang", name: "Nanang Nanda", region: "Inovasi untuk Budaya", votes: 0, img: "https://ui-avatars.com/api/?name=Nanda&background=0A251C&color=F6F1E2&size=256" },
-    { id: 7, cat: "nanang", name: "Nanang Zaid", region: "Balangan Maju Terdepan", votes: 0, img: "https://ui-avatars.com/api/?name=Zaid&background=0A251C&color=F6F1E2&size=256" },
-    { id: 8, cat: "nanang", name: "Nanang Syarif", region: "Cinta Tanah Air", votes: 0, img: "https://ui-avatars.com/api/?name=Syarif&background=0A251C&color=F6F1E2&size=256" },
-    { id: 9, cat: "nanang", name: "Nanang Ilham", region: "Muda, Beda, Berbahaya", votes: 0, img: "https://ui-avatars.com/api/?name=Ilham&background=0A251C&color=F6F1E2&size=256" },
+    { id: 1, cat: "nanang", name: "Ahmad Fauzi", region: "Berakhlak, Berkarya, Untuk Balangan Maju", votes: 0, img: "1.png" },
+    { id: 2, cat: "nanang", name: "M. Rizky Pratama", region: "Bersama Membangun Generasi Emas Balangan", votes: 0, img: "2.png" },
+    { id: 3, cat: "nanang", name: "Hendra Saputra", region: "Kolaborasi untuk Balangan yang Lebih Baik", votes: 0, img: "3.png" },
+    { id: 4, cat: "nanang", name: "Rizki Maulana", region: "Inovasi, Integritas, Untuk Masa Depan", votes: 0, img: "4.png" },
+    { id: 5, cat: "nanang", name: "Nanang Akid", region: "Mewujudkan Pemuda Kreatif", votes: 0, img: "5.png" },
+    { id: 6, cat: "nanang", name: "Nanang Nanda", region: "Inovasi untuk Budaya", votes: 0, img: "6.png" },
+    { id: 7, cat: "nanang", name: "Nanang Zaid", region: "Balangan Maju Terdepan", votes: 0, img: "7.png" },
+    { id: 8, cat: "nanang", name: "Nanang Syarif", region: "Cinta Tanah Air", votes: 0, img: "8.png" },
+    { id: 9, cat: "nanang", name: "Nanang Ilham", region: "Muda, Beda, Berbahaya", votes: 0, img: "9.png" },
     
-    { id: 10, cat: "galuh", name: "Galuh Putri", region: "Anggun dan Berprestasi", votes: 0, img: "https://ui-avatars.com/api/?name=Putri&background=D4AF37&color=0A251C&size=256" },
-    { id: 11, cat: "galuh", name: "Galuh Sari", region: "Cerdas Berbudaya", votes: 0, img: "https://ui-avatars.com/api/?name=Sari&background=D4AF37&color=0A251C&size=256" },
-    { id: 12, cat: "galuh", name: "Galuh Ayu", region: "Menginspirasi Negeri", votes: 0, img: "https://ui-avatars.com/api/?name=Ayu&background=D4AF37&color=0A251C&size=256" },
-    { id: 13, cat: "galuh", name: "Galuh Intan", region: "Kecantikan dari Hati", votes: 0, img: "https://ui-avatars.com/api/?name=Intan&background=D4AF37&color=0A251C&size=256" },
-    { id: 14, cat: "galuh", name: "Galuh Maya", region: "Pemuda Penggerak", votes: 0, img: "https://ui-avatars.com/api/?name=Maya&background=D4AF37&color=0A251C&size=256" },
-    { id: 15, cat: "galuh", name: "Galuh Rina", region: "Melestarikan Budaya", votes: 0, img: "https://ui-avatars.com/api/?name=Rina&background=D4AF37&color=0A251C&size=256" },
-    { id: 16, cat: "galuh", name: "Galuh Dita", region: "Aksi Nyata untuk Balangan", votes: 0, img: "https://ui-avatars.com/api/?name=Dita&background=D4AF37&color=0A251C&size=256" },
-    { id: 17, cat: "galuh", name: "Galuh Nisa", region: "Kreativitas Tanpa Batas", votes: 0, img: "https://ui-avatars.com/api/?name=Nisa&background=D4AF37&color=0A251C&size=256" },
-    { id: 18, cat: "galuh", name: "Galuh Laila", region: "Harmoni dalam Keberagaman", votes: 0, img: "https://ui-avatars.com/api/?name=Laila&background=D4AF37&color=0A251C&size=256" }
+    { id: 10, cat: "galuh", name: "Galuh Putri", region: "Anggun dan Berprestasi", votes: 0, img: "01.png" },
+    { id: 11, cat: "galuh", name: "Galuh Sari", region: "Cerdas Berbudaya", votes: 0, img: "02.png" },
+    { id: 12, cat: "galuh", name: "Galuh Ayu", region: "Menginspirasi Negeri", votes: 0, img: "03.png" },
+    { id: 13, cat: "galuh", name: "Galuh Intan", region: "Kecantikan dari Hati", votes: 0, img: "04.png" },
+    { id: 14, cat: "galuh", name: "Galuh Maya", region: "Pemuda Penggerak", votes: 0, img: "05.png" },
+    { id: 15, cat: "galuh", name: "Galuh Rina", region: "Melestarikan Budaya", votes: 0, img: "06.png" },
+    { id: 16, cat: "galuh", name: "Galuh Dita", region: "Aksi Nyata untuk Balangan", votes: 0, img: "07.png" },
+    { id: 17, cat: "galuh", name: "Galuh Nisa", region: "Kreativitas Tanpa Batas", votes: 0, img: "08.png" },
+    { id: 18, cat: "galuh", name: "Galuh Laila", region: "Harmoni dalam Keberagaman", votes: 0, img: "09.png" }
   ];
 
   let candidates = [];
@@ -462,6 +463,19 @@
     } else {
       candidates = data.filter(c => c !== null);
     }
+
+    let imagesUpdated = false;
+    candidates = candidates.map(candidate => {
+      let image = getCandidateImage(candidate);
+      if (candidate.img !== image) {
+        imagesUpdated = true;
+        return { ...candidate, img: image };
+      }
+      return candidate;
+    });
+    if (imagesUpdated) {
+      set(candidatesRef, candidates);
+    }
     
     renderApp();
     if(document.getElementById("admin-dashboard-section").style.display === "block"){
@@ -471,6 +485,13 @@
 
   function formatRp(angka) {
     return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function getCandidateImage(candidate) {
+    if (candidate.cat === "galuh") {
+      return `${String(candidate.id - 9).padStart(2, "0")}.png`;
+    }
+    return `${candidate.id}.png`;
   }
 
   function showToast(message) {
