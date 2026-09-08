@@ -160,7 +160,7 @@
     .cv-step { flex-direction: row; text-align: left; gap: 16px; width: 100%; max-width: 300px; }
     .cv-icon { margin: 0; flex-shrink: 0;}
     .cv-arrow { transform: rotate(90deg); margin: 0; height: 20px;}
-    .nav-links { display: none; } /* Sembunyikan menu atas di mobile agar rapi */
+    .nav-links { display: none; }
   }
 </style>
 </head>
@@ -359,7 +359,8 @@
 
     <p style="font-size: 12px; color: var(--primary-dark); margin-bottom: 15px; font-weight: 500; line-height: 1.4;">Harap catat ID Transaksi <strong>(<span id="trx-id-copy"></span>)</strong> sebelum membuka form di bawah.</p>
     
-    <a href="https://forms.gle/GANTI_DENGAN_LINK_FORM_ANDA" target="_blank" class="modal-btn-outline">1. Upload Bukti di Form</a>
+    <!-- LINK GOOGLE FORM ANDA SUDAH TERPASANG DI SINI -->
+    <a href="https://forms.gle/1qhckyV35q7gf3zJ6" target="_blank" class="modal-btn-outline">1. Upload Bukti di Form</a>
     <button class="modal-btn" onclick="processPayment()">2. Konfirmasi Saya Sudah Bayar</button>
     <button class="modal-btn-cancel" onclick="closeModal('checkout-modal')">Batalkan Transaksi</button>
   </div>
@@ -620,7 +621,6 @@
     let totalVotes = Object.values(cart).reduce((a, b) => a + b, 0);
     let totalPrice = totalVotes * PRICE_PER_VOTE;
     
-    // Logika Pintar untuk ID Transaksi (NB/GB digabung tanpa strip)
     let firstIdStr = Object.keys(cart)[0];
     let firstCand = candidates.find(c => c.id == firstIdStr);
     
@@ -629,11 +629,11 @@
 
     if (firstCand) {
       prefix = firstCand.cat === "galuh" ? "GB" : "NB";
-      candDisplayId = firstCand.id;
+      candDisplayId = firstCand.id > 9 ? firstCand.id - 9 : firstCand.id;
     }
     
     let randomCode = Math.floor(10 + Math.random() * 90);
-    let newTrxId = `${prefix}${candDisplayId}${totalVotes}${randomCode}`;
+    let newTrxId = `${prefix}-${candDisplayId}-${totalVotes}-${randomCode}`;
     
     document.getElementById("trx-id").textContent = newTrxId;
     document.getElementById("trx-id-copy").textContent = newTrxId;
