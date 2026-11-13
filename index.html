@@ -186,6 +186,15 @@
   .modal-btn-outline { background: transparent; color: var(--primary-dark); border: 1px solid var(--primary-dark); padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 600; font-size: 14px; margin-bottom: 10px; display: block; text-decoration: none;}
   .modal-btn-outline:hover { background: rgba(12,30,69,0.05); }
   .modal-btn-cancel { background: transparent; color: var(--text-muted); border: none; margin-top: 12px; font-weight: 500; font-size: 13px; cursor: pointer; width: 100%;}
+  .modal-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .upload-form { text-align: left; margin-bottom: 10px; }
+  .upload-form label { display: block; font-size: 12px; font-weight: 600; color: var(--primary-dark); margin: 10px 0 4px; }
+  .upload-form label .opt { font-weight: 400; color: var(--text-muted); }
+  .upload-form input[type="text"], .upload-form input[type="tel"] { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 13px; box-sizing: border-box; }
+  .upload-form input[readonly] { background: var(--bg-main); color: var(--text-muted); }
+  .upload-form input[type="file"] { width: 100%; font-size: 12px; font-family: inherit; }
+  .upload-form .modal-btn-outline { margin-top: 14px; margin-bottom: 0; }
+  .upload-status { font-size: 12.5px; font-weight: 500; color: var(--primary-dark); margin-top: 10px; min-height: 18px; text-align: center; }
   
   .admin-input-group { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 12px 0; text-align: left;}
   .admin-input-group label { font-size: 13px; font-weight: 600; color: var(--primary-dark); flex: 1; display:flex; align-items:center; gap:6px; flex-wrap: wrap;}
@@ -416,11 +425,35 @@
       <div style="font-size: 12px; color: var(--text-muted); margin-top: 10px; font-weight: 500;">Scan QRIS ini untuk membayar</div>
     </div>
 
-    <p style="font-size: 12px; color: var(--primary-dark); margin-bottom: 15px; font-weight: 500; line-height: 1.4;">Harap catat ID Transaksi <strong>(<span id="trx-id-copy"></span>)</strong> sebelum membuka form di bawah.</p>
-    
-    <!-- LINK GOOGLE FORM ANDA SUDAH TERPASANG DI SINI -->
-    <a href="https://forms.gle/1qhckyV35q7gf3zJ6" target="_blank" class="modal-btn-outline">1. Upload Bukti di Form</a>
-    <button class="modal-btn" onclick="processPayment()">2. Konfirmasi Saya Sudah Bayar</button>
+    <p style="font-size: 12px; color: var(--primary-dark); margin-bottom: 15px; font-weight: 500; line-height: 1.4;">Upload bukti transfer di bawah ini. ID Transaksi <strong>(<span id="trx-id-copy"></span>)</strong> sudah terisi otomatis &mdash; tombol konfirmasi aktif setelah bukti berhasil diunggah.</p>
+
+    <!-- FORM UPLOAD BUKTI (Netlify Forms) - pengganti Google Form -->
+    <form id="upload-form" name="upload-bukti" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data" class="upload-form">
+      <input type="hidden" name="form-name" value="upload-bukti">
+      <p style="display:none;"><label>Jangan diisi: <input name="bot-field"></label></p>
+
+      <label for="field-nama">Nama Pemilih</label>
+      <input type="text" id="field-nama" name="nama" placeholder="Nama lengkap Anda" required>
+
+      <label for="field-wa">No. WhatsApp <span class="opt">(opsional)</span></label>
+      <input type="tel" id="field-wa" name="whatsapp" placeholder="08xxxxxxxxxx">
+
+      <label for="field-trx-id">ID Transaksi</label>
+      <input type="text" id="field-trx-id" name="id-transaksi" readonly>
+
+      <label for="field-kandidat">Kandidat &amp; Jumlah Vote</label>
+      <input type="text" id="field-kandidat" name="kandidat" readonly>
+      <input type="hidden" id="field-qty" name="jumlah-vote" value="">
+      <input type="hidden" id="field-total" name="total-bayar" value="">
+
+      <label for="bukti-file">Bukti Transfer <span class="opt">(gambar/PDF, maks 8 MB)</span></label>
+      <input type="file" id="bukti-file" name="bukti-transfer" accept="image/*,.pdf" required>
+
+      <button type="submit" id="btn-upload-proof" class="modal-btn-outline">1. Upload Bukti Transfer</button>
+      <div id="upload-status" class="upload-status" role="status"></div>
+    </form>
+
+    <button id="btn-confirm-pay" class="modal-btn" onclick="processPayment()" disabled>2. Konfirmasi Saya Sudah Bayar</button>
     <button class="modal-btn-cancel" onclick="closeModal('checkout-modal')">Batalkan Transaksi</button>
   </div>
 </div>
@@ -499,7 +532,8 @@
   ];
 
   let candidates = [];
-  let cart = {}; 
+  let cart = {};
+  let proofUploaded = false; // true setelah bukti berhasil diunggah via Netlify Forms 
   let activeCategory = "nanang";
 
   onValue(candidatesRef, (snapshot) => {
@@ -782,7 +816,26 @@
     document.getElementById("trx-id-copy").textContent = newTrxId;
     document.getElementById("trx-qty").textContent = totalVotes + " Vote";
     document.getElementById("trx-total").textContent = formatRp(totalPrice);
-    
+
+    // Isi otomatis form upload bukti + reset status upload (ID transaksi baru)
+    const uploadForm = document.getElementById("upload-form");
+    if (uploadForm) uploadForm.reset();
+    const cartSummary = Object.entries(cart).map(([idStr, qty]) => {
+      const c = candidates.find(cand => cand.id == idStr);
+      return c ? `${c.name} x${qty}` : "";
+    }).filter(Boolean).join(", ");
+    document.getElementById("field-trx-id").value = newTrxId;
+    document.getElementById("field-kandidat").value = cartSummary;
+    document.getElementById("field-qty").value = totalVotes + " Vote";
+    document.getElementById("field-total").value = formatRp(totalPrice);
+    proofUploaded = false;
+    const uploadStatus = document.getElementById("upload-status");
+    if (uploadStatus) uploadStatus.textContent = "";
+    const uploadBtn = document.getElementById("btn-upload-proof");
+    if (uploadBtn) { uploadBtn.disabled = false; uploadBtn.textContent = "1. Upload Bukti Transfer"; }
+    const confirmBtn = document.getElementById("btn-confirm-pay");
+    if (confirmBtn) confirmBtn.disabled = true;
+
     document.getElementById("checkout-modal").style.display = "flex";
   }
 
@@ -791,6 +844,10 @@
   }
 
   window.processPayment = function() {
+    if (!proofUploaded) {
+      showToast("Upload bukti transfer dulu sebelum konfirmasi.");
+      return;
+    }
     let totalVotesAdded = 0;
     for (const [idStr, qty] of Object.entries(cart)) {
       let id = parseInt(idStr);
@@ -806,6 +863,44 @@
     updateSidebar();
     closeModal('checkout-modal');
     showToast(`✅ Berhasil! ${totalVotesAdded} vote langsung ditambahkan ke server pusat.`);
+  }
+
+  // Upload bukti via Netlify Forms (pengganti Google Form).
+  // Netlify menerima POST multipart ke "/" dan menyimpan submission + file
+  // di dashboard Netlify (Forms). Tanpa login Google.
+  const uploadFormEl = document.getElementById("upload-form");
+  if (uploadFormEl) {
+    uploadFormEl.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const statusEl = document.getElementById("upload-status");
+      const submitBtn = document.getElementById("btn-upload-proof");
+      const fileInput = document.getElementById("bukti-file");
+      const file = fileInput.files[0];
+      if (!file) {
+        statusEl.textContent = "Pilih dulu file bukti transfernya.";
+        return;
+      }
+      if (file.size > 8 * 1024 * 1024) {
+        statusEl.textContent = "Ukuran file maksimal 8 MB. Perkecil dulu gambarnya lalu coba lagi.";
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Mengunggah...";
+      statusEl.textContent = "Mengunggah bukti, mohon tunggu...";
+      try {
+        const formData = new FormData(uploadFormEl);
+        const res = await fetch("/", { method: "POST", body: formData });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        proofUploaded = true;
+        statusEl.textContent = "✅ Bukti berhasil diunggah. Silakan lanjut ke langkah 2.";
+        submitBtn.textContent = "✓ Bukti Terunggah";
+        document.getElementById("btn-confirm-pay").disabled = false;
+      } catch (err) {
+        statusEl.textContent = "❌ Gagal mengunggah. Periksa koneksi lalu coba lagi.";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "1. Upload Bukti Transfer";
+      }
+    });
   }
 
   // Admin Scripts
