@@ -49,7 +49,7 @@
   .hero { 
     position: relative; 
     background-color: var(--primary-dark);
-    background-image: linear-gradient(115deg, rgba(45,125,179,0.95) 0%, rgba(79,168,220,0.88) 40%, rgba(137,207,240,0.7) 75%, rgba(201,236,251,0.35) 100%), url('background.jpg'); 
+    background-image: linear-gradient(115deg, rgba(45,125,179,0.95) 0%, rgba(79,168,220,0.88) 40%, rgba(137,207,240,0.7) 75%, rgba(201,236,251,0.35) 100%); 
     background-size: cover; 
     background-position: center; 
     color: var(--white); 
@@ -120,6 +120,11 @@
   .cart-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; color: var(--primary-dark); margin-bottom: 16px; }
   .btn-checkout { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--primary-deep); border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 10px 18px rgba(79, 168, 220, 0.24); }
   .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-checkout-attn { animation: checkout-pulse 1.6s ease; }
+  @keyframes checkout-pulse {
+    0%, 100% { box-shadow: 0 10px 18px rgba(79, 168, 220, 0.24); }
+    30%, 60% { box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.55), 0 10px 18px rgba(79, 168, 220, 0.24); }
+  }
   .cart-ornament { position: absolute; top: 0; right: 0; width: 80px; opacity: 0.1; pointer-events: none;}
 
   /* Leaderboard Sidebar */
@@ -132,7 +137,7 @@
   .lb-list { display: flex; flex-direction: column; gap: 16px; }
   .lb-item { display: flex; align-items: center; gap: 12px; }
   .lb-rank { width: 24px; height: 24px; background: var(--gold); color: var(--primary-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;}
-  .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-light); flex-shrink: 0;}
+  .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: center top; border: 2px solid var(--gold-light); flex-shrink: 0;}
   .lb-details { flex: 1; }
   .lb-name-pct { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
   .lb-bar-track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
@@ -152,19 +157,45 @@
   .podium-crown { font-size: 26px; margin-bottom: 2px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35)); }
   .podium-avatar-wrap { position: relative; border-radius: 50%; padding: 4px; margin-bottom: 10px; background: linear-gradient(135deg, #ffffff, var(--gold)); box-shadow: 0 14px 28px rgba(6,20,48,0.35), 0 0 0 4px rgba(255,255,255,0.12); }
   .podium-first .podium-avatar-wrap { padding: 5px; background: linear-gradient(135deg, #ffffff, var(--gold), var(--primary-dark)); box-shadow: 0 18px 34px rgba(23,65,95,0.4), 0 0 0 5px rgba(137,207,240,0.3); }
-  .podium-avatar { display: block; border-radius: 50%; object-fit: cover; background: var(--primary-deep); }
+  .podium-avatar { display: block; border-radius: 50%; object-fit: cover; object-position: center top; background: var(--primary-deep); }
   .podium-first .podium-avatar { width: 104px; height: 104px; }
   .podium-second .podium-avatar, .podium-third .podium-avatar { width: 76px; height: 76px; }
   .podium-rank-badge { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; color: var(--primary-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #fff; }
   .podium-rank-badge.r1 { background: linear-gradient(135deg, #ffffff, var(--gold)); width: 30px; height: 30px; font-size: 13px; }
   .podium-rank-badge.r2 { background: linear-gradient(135deg, #F4F8FF, var(--silver)); }
   .podium-rank-badge.r3 { background: linear-gradient(135deg, #E9C9A2, var(--bronze)); }
-  .podium-name { color: var(--white); font-weight: 700; font-size: 13.5px; line-height: 1.25; margin-bottom: 12px; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .podium-name { color: var(--white); font-weight: 700; font-size: 13.5px; line-height: 1.25; margin-bottom: 4px; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .podium-pct { color: var(--white); font-weight: 800; font-size: 15px; margin-bottom: 10px; }
+  .podium-first .podium-pct { font-size: 17px; }
   .podium-first .podium-name { font-size: 15.5px; }
   .podium-base { width: 100%; border-radius: 14px 14px 0 0; background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)); backdrop-filter: blur(6px); display: flex; align-items: flex-start; justify-content: center; padding-top: 10px; color: #fff; font-weight: 800; font-family: 'Poppins', sans-serif; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 -6px 18px rgba(6,20,48,0.2); }
   .podium-base.b1 { height: 84px; font-size: 30px; background: linear-gradient(180deg, rgba(137,207,240,0.4), rgba(255,255,255,0.06)); }
   .podium-base.b2 { height: 58px; font-size: 22px; }
   .podium-base.b3 { height: 42px; font-size: 20px; }
+  /* Footer baru (desain screenshot 16 Nov 2026) */
+  .site-footer { background: var(--primary-dark); color: #fff; }
+  .footer-main { max-width: 1280px; margin: 0 auto; padding: 36px 20px 28px; display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+  .footer-brand { max-width: 560px; }
+  .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .footer-logo img { width: 48px; height: 48px; border-radius: 12px; background: #fff; object-fit: cover; }
+  .footer-logo .fname { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: 1px; line-height: 1.1; }
+  .footer-logo .ftag { font-size: 10px; letter-spacing: 2px; opacity: 0.85; }
+  .footer-desc { font-size: 13.5px; line-height: 1.6; opacity: 0.92; margin-bottom: 18px; }
+  .footer-org { border-left: 3px solid rgba(255,255,255,0.5); padding-left: 12px; margin-bottom: 18px; }
+  .footer-org strong { display: block; font-size: 14px; margin-bottom: 2px; }
+  .footer-org span { font-size: 13px; opacity: 0.9; }
+  .footer-ig-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(90deg, #F58529, #DD2A7B 55%, #8134AF); color: #fff; text-decoration: none; font-weight: 700; font-size: 13.5px; padding: 10px 20px; border-radius: 999px; box-shadow: 0 8px 18px rgba(0,0,0,0.25); }
+  .footer-ig-btn svg { width: 16px; height: 16px; fill: #fff; }
+  .footer-links-col h4 { font-size: 13px; letter-spacing: 2px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .footer-links-col h4::after { content: ""; width: 28px; height: 2px; background: rgba(255,255,255,0.6); }
+  .footer-links-col a { display: block; color: rgba(255,255,255,0.92); text-decoration: none; font-size: 13.5px; margin-bottom: 10px; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.25); }
+  .footer-bottom-in { max-width: 1280px; margin: 0 auto; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: rgba(255,255,255,0.85); }
+  .footer-social { display: flex; gap: 10px; }
+  .footer-social a { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(0,0,0,0.25); }
+  .footer-social a.ig { background: linear-gradient(135deg, #F58529, #DD2A7B 50%, #8134AF); }
+  .footer-social a.wa { background: #25D366; }
+  .footer-social svg { width: 18px; height: 18px; fill: #fff; }
   .podium-empty { color: rgba(255,255,255,0.85); font-size: 13px; position: relative; z-index: 1; padding: 20px 0; }
   @media(max-width: 560px) {
     .podium-card { width: 96px; }
@@ -276,11 +307,11 @@
     <div class="tabs-wrapper" id="kandidat">
       <button class="tab-btn active" id="tab-nanang" onclick="window.switchTab('nanang')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        Kategori Nanang
+        Nanang
       </button>
       <button class="tab-btn" id="tab-galuh" onclick="window.switchTab('galuh')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-        Kategori Galuh
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        Galuh
       </button>
     </div>
 
@@ -319,7 +350,7 @@
               <div class="cv-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg></div>
               <div>
                 <div class="cv-title">2. Pilih Kandidat</div>
-                <div class="cv-desc">Tentukan kandidat favorit Anda</div>
+                <div class="cv-desc">Tentukan kandidat favorit Anda &mdash; satu transaksi hanya untuk satu kandidat</div>
               </div>
             </div>
             <div class="cv-arrow">&rarr;</div>
@@ -335,7 +366,7 @@
               <div class="cv-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></div>
               <div>
                 <div class="cv-title">4. Pembayaran</div>
-                <div class="cv-desc">Lakukan pembayaran Rp 5.000/vote</div>
+                <div class="cv-desc">Lakukan pembayaran Rp 10.000/vote</div>
               </div>
             </div>
             <div class="cv-arrow">&rarr;</div>
@@ -359,7 +390,7 @@
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
             Ringkasan Vote
           </div>
-          <div class="cart-price">Harga per vote: <span style="color: var(--primary-dark);">Rp 5.000</span></div>
+          <div class="cart-price">Harga per vote: <span style="color: var(--primary-dark);">Rp 10.000</span></div>
           
           <div class="cart-items" id="cart-items">
             <div style="font-size: 13px; color: var(--text-muted); text-align: center; margin-top: 10px;">Belum ada vote yang dipilih</div>
@@ -392,10 +423,39 @@
     </div>
   </div>
 
-  <footer style="background: var(--primary-dark); color: var(--gold-light); text-align: center; padding: 24px; font-size: 13px; border-top: 1px solid rgba(216,230,250,0.15);">
-    Lestarikan Budaya, Dukung Nanang Galuh Terbaik Balangan
-    <br>
-    <span id="admin-secret-trigger" style="opacity:0.6; font-size:11px; cursor:pointer; user-select:none;" title="Klik 5x untuk admin">Didukung oleh platform <strong>Nanang Khairullah</strong></span>
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="logo.jpg" alt="NaGa.Tix">
+          <div>
+            <div class="fname">NAGA.TIX</div>
+            <div class="ftag">MEDIA PARTNER EVENT BY TICKETING &amp; VOTING</div>
+          </div>
+        </div>
+        <p class="footer-desc">Platform e-ticketing dan voting pageant online terpercaya di Kalimantan Selatan. Menyediakan layanan manajemen event, ticketing modern, dan pemungutan suara transparan &amp; akurat.</p>
+        <div class="footer-org">
+          <strong>Yayasan Pawadahan Nanang Galuh Balangan</strong>
+          <span>Jl. A. Yani Km. 2,5, Batu Piring, Paringin Selatan, Kabupaten Balangan, Kalimantan Selatan 71662</span>
+        </div>
+        <a class="footer-ig-btn" href="https://www.instagram.com/naga.tix?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener"><svg viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>Hubungi via Instagram</a>
+      </div>
+      <div class="footer-links-col">
+        <h4>DUKUNGAN</h4>
+        <a href="syarat-ketentuan.html">Syarat &amp; Ketentuan</a>
+        <a href="kebijakan-privasi.html">Kebijakan Privasi</a>
+        <a href="bantuan-faq.html">Bantuan / FAQ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-in">
+        <div>&copy; 2026 NAGA.TIX - By PNGBLG. All Rights Reserved. <span id="admin-secret-trigger" style="opacity:0.6; font-size:11px; cursor:pointer; user-select:none;" title="Klik 5x untuk admin">&bull;</span></div>
+        <div class="footer-social">
+          <a class="ig" href="https://www.instagram.com/nagabalangan?utm_source=ig_web_button_share_sheet&obrf=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+          <a class="wa" href="https://wa.me/6282253593653" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6z"/></svg></a>
+        </div>
+      </div>
+    </div>
   </footer>
 </div>
 
@@ -507,29 +567,33 @@
   const db = getDatabase(app);
   const candidatesRef = ref(db, 'candidates');
 
-  const PRICE_PER_VOTE = 5000;
+  const PRICE_PER_VOTE = 10000;
   
+  // Urutan tampil resmi (16 Nov 2026): Nanang 65,23,45,17,35,11,63,29,31; Galuh 10,88,30,82,18,64,84,42,02
   let defaultCandidates = [
-    { id: 1, cat: "nanang", name: "23_Nanang Rafi", region: "Kecamatan Paringin", votes: 0, img: "1.jpg" },
-    { id: 2, cat: "nanang", name: "17_Nanang Al", region: "Kecamatan Paringin Selatan", votes: 0, img: "2.jpg" },
-    { id: 3, cat: "nanang", name: "11_Nanang Sulthan", region: "Kecamatan_Lampihong", votes: 0, img: "3.jpg" },
-    { id: 4, cat: "nanang", name: "35_Nanang Juna", region: "Kecamatan Paringin", votes: 0, img: "4.jpg" },
-    { id: 5, cat: "nanang", name: "31_Nanang Verzha", region: "Kecamatan Awayan", votes: 0, img: "5.jpg" },
-    { id: 6, cat: "nanang", name: "29_Nanang Chandra", region: "Kecamatan TebingTinggi", votes: 0, img: "6.jpg" },
-    { id: 7, cat: "nanang", name: "65_Nanang Najib", region: "Kecamatan Paringin Selatan", votes: 0, img: "7.jpg" },
-    { id: 8, cat: "nanang", name: "63_Nanang Bayu", region: "Kecamatan Juai", votes: 0, img: "8.jpg" },
-    { id: 9, cat: "nanang", name: "45_Nanang Mahdi", region: "Kecamatan Juai", votes: 0, img: "9.jpg" },
-    
-    { id: 10, cat: "galuh", name: "18_Galuh Risnita", region: "Kecamatan Batumandi", votes: 0, img: "01.jpg" },
-    { id: 11, cat: "galuh", name: "10_Galuh Anis", region: "Kecamatan TebingTinggi ", votes: 0, img: "02.jpg" },
-    { id: 12, cat: "galuh", name: "02_Galuh Fitria", region: "Kecamatan Lampihong", votes: 0, img: "03.jpg" },
-    { id: 13, cat: "galuh", name: "64_Galuh Sinta", region: "Kecamatan Halong", votes: 0, img: "04.jpg" },
-    { id: 14, cat: "galuh", name: "42_Galuh Naila", region: "Kecamatan Lampihong", votes: 0, img: "05.jpg" },
-    { id: 15, cat: "galuh", name: "30_Galuh Kurnia", region: "Kecamatan Paringin", votes: 0, img: "06.jpg" },
-    { id: 16, cat: "galuh", name: "88_Galuh Syifa", region: "Kecamatan Paringin", votes: 0, img: "07.jpg" },
-    { id: 17, cat: "galuh", name: "84_Galuh Nor", region: "Kecamatan juai", votes: 0, img: "08.jpg" },
-    { id: 18, cat: "galuh", name: "82_Galuh Rahmawati", region: "Kecamatan Paringin", votes: 0, img: "09.jpg" }
+    { id: 1, cat: "nanang", name: "65_Nanang Najib", region: "Kecamatan Paringin Selatan", votes: 0, img: "1.png" },
+    { id: 2, cat: "nanang", name: "23_Nanang Rafi", region: "Kecamatan Paringin", votes: 0, img: "2.png" },
+    { id: 3, cat: "nanang", name: "45_Nanang Mahdi", region: "Kecamatan Juai", votes: 0, img: "3.png" },
+    { id: 4, cat: "nanang", name: "17_Nanang Al", region: "Kecamatan Paringin Selatan", votes: 0, img: "4.png" },
+    { id: 5, cat: "nanang", name: "35_Nanang Juna", region: "Kecamatan Paringin", votes: 0, img: "5.png" },
+    { id: 6, cat: "nanang", name: "11_Nanang Sulthan", region: "Kecamatan Lampihong", votes: 0, img: "6.png" },
+    { id: 7, cat: "nanang", name: "63_Nanang Bayu", region: "Kecamatan Juai", votes: 0, img: "7.png" },
+    { id: 8, cat: "nanang", name: "29_Nanang Chandra", region: "Kecamatan Tebing Tinggi", votes: 0, img: "8.png" },
+    { id: 9, cat: "nanang", name: "31_Nanang Verzha", region: "Kecamatan Awayan", votes: 0, img: "9.png" },
+
+    { id: 11, cat: "galuh", name: "10_Galuh Anis", region: "Kecamatan Tebing Tinggi", votes: 0, img: "01.png" },
+    { id: 12, cat: "galuh", name: "88_Galuh Syifa", region: "Kecamatan Paringin", votes: 0, img: "02.png" },
+    { id: 13, cat: "galuh", name: "30_Galuh Kurnia", region: "Kecamatan Paringin", votes: 0, img: "03.png" },
+    { id: 14, cat: "galuh", name: "82_Galuh Rahma", region: "Kecamatan Paringin", votes: 0, img: "04.png" },
+    { id: 15, cat: "galuh", name: "18_Galuh Risnita", region: "Kecamatan Batumandi", votes: 0, img: "05.png" },
+    { id: 16, cat: "galuh", name: "64_Galuh Sinta", region: "Kecamatan Halong", votes: 0, img: "06.png" },
+    { id: 17, cat: "galuh", name: "84_Galuh Asifa", region: "Kecamatan Juai", votes: 0, img: "07.png" },
+    { id: 18, cat: "galuh", name: "42_Galuh Naila", region: "Kecamatan Lampihong", votes: 0, img: "08.png" },
+    { id: 19, cat: "galuh", name: "02_Galuh Fitria", region: "Kecamatan Lampihong", votes: 0, img: "09.png" }
   ];
+
+  // Urutan tampil resmi (dipakai grid + sort data): Nanang 65,23,45,17,35,11,63,29,31; Galuh 10,88,30,82,18,64,84,42,02
+  const DISPLAY_ORDER = [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19];
 
   let candidates = [];
   let cart = {};
@@ -541,56 +605,34 @@
     document.getElementById("loading-screen").style.display = "none";
     document.getElementById("main-content").style.display = "block";
 
-    const defaultMap = new Map(defaultCandidates.map(c => [c.id, c]));
-
-    if (!data || data.filter(c => c !== null).length <= 10) {
-      candidates = [...defaultCandidates];
-      if (data) {
-        data.forEach(d => {
-          if(d) {
-            let idx = candidates.findIndex(c => c.id === d.id);
-            if(idx !== -1) candidates[idx].votes = d.votes;
-          }
-        });
-      }
-      set(candidatesRef, candidates);
-    } else {
-      candidates = data.filter(c => c !== null).map(candidate => {
-        const defaultCandidate = defaultMap.get(candidate.id);
-        if (!defaultCandidate) return candidate;
-        return {
-          ...candidate,
-          cat: defaultCandidate.cat,
-          name: defaultCandidate.name,
-          region: defaultCandidate.region,
-          img: defaultCandidate.img
-        };
-      });
-    }
-
-    let imagesUpdated = false;
-    candidates = candidates.map(candidate => {
-      let image = getCandidateImage(candidate);
-      let mergedCandidate = { ...candidate, img: image };
-      const defaultCandidate = defaultMap.get(candidate.id);
-
-      if (defaultCandidate) {
-        mergedCandidate = {
-          ...mergedCandidate,
-          cat: defaultCandidate.cat,
-          name: defaultCandidate.name,
-          region: defaultCandidate.region,
-          img: image,
-        };
-      }
-
-      if (candidate.img !== image || candidate.name !== mergedCandidate.name || candidate.region !== mergedCandidate.region || candidate.cat !== mergedCandidate.cat) {
-        imagesUpdated = true;
-      }
-
-      return mergedCandidate;
+    const savedById = new Map(
+      (Array.isArray(data) ? data : [])
+        .filter(Boolean)
+        .map(candidate => [Number(candidate.id), candidate])
+    );
+    candidates = defaultCandidates.map(defaultCandidate => {
+      const savedCandidate = savedById.get(defaultCandidate.id);
+      const savedVotes = Number(savedCandidate?.votes);
+      return {
+        ...defaultCandidate,
+        votes: Number.isFinite(savedVotes) && savedVotes >= 0 ? savedVotes : defaultCandidate.votes,
+        img: getCandidateImage(defaultCandidate)
+      };
     });
-    if (imagesUpdated) {
+
+    const dataIsCanonical = Array.isArray(data)
+      && data.length === candidates.length
+      && candidates.every((candidate, index) => {
+        const savedCandidate = data[index];
+        return savedCandidate
+          && Number(savedCandidate.id) === candidate.id
+          && savedCandidate.cat === candidate.cat
+          && savedCandidate.name === candidate.name
+          && savedCandidate.region === candidate.region
+          && savedCandidate.img === candidate.img
+          && Number(savedCandidate.votes) === candidate.votes;
+      });
+    if (!dataIsCanonical) {
       set(candidatesRef, candidates);
     }
     
@@ -606,9 +648,9 @@
 
   function getCandidateImage(candidate) {
     if (candidate.cat === "galuh") {
-      return `${String(candidate.id - 9).padStart(2, "0")}.jpg`;
+      return `${String(candidate.id - 10).padStart(2, "0")}.png`;
     }
-    return `${candidate.id}.jpg`;
+    return `${candidate.id}.png`;
   }
 
   function showToast(message) {
@@ -668,10 +710,10 @@
     // Grid Candidates
     const gridContainer = document.getElementById("candidates-container");
     gridContainer.innerHTML = "";
-    let gridCandidates = [...currentCategoryCandidates].sort((a,b) => a.id - b.id);
+    let gridCandidates = [...currentCategoryCandidates].sort((a, b) => DISPLAY_ORDER.indexOf(a.id) - DISPLAY_ORDER.indexOf(b.id));
     
-    gridCandidates.forEach(c => {
-      let displayId = String(c.id > 9 ? c.id - 9 : c.id).padStart(2, '0');
+    gridCandidates.forEach((c, idx) => {
+      let displayId = String(idx + 1).padStart(2, '0');
       gridContainer.innerHTML += `
         <div class="c-card">
           <div class="img-wrapper">
@@ -721,6 +763,7 @@
             <div class="podium-rank-badge r${rank}">${rank}</div>
           </div>
           <div class="podium-name">${c.name}</div>
+          <div class="podium-pct">${pct}%</div>
           <div class="podium-base b${rank}">${rank}</div>
         </div>
       `;
@@ -730,9 +773,22 @@
   }
 
   window.addToCart = function(id) {
+    // Satu transaksi hanya untuk satu kandidat: pilih kandidat lain = ganti keranjang
+    const existingIds = Object.keys(cart);
+    if (existingIds.length > 0 && !cart[id]) {
+      cart = {};
+      showToast("Satu vote hanya untuk satu kandidat. Pilihan sebelumnya diganti.");
+    }
     if(!cart[id]) cart[id] = 0;
     cart[id] += 1;
     updateSidebar();
+    // Scroll langsung ke tombol "Lanjutkan Pembayaran" setelah vote dipilih
+    const btnCheckout = document.getElementById("btn-checkout");
+    if (btnCheckout) {
+      btnCheckout.scrollIntoView({ behavior: "smooth", block: "center" });
+      btnCheckout.classList.add("btn-checkout-attn");
+      setTimeout(() => btnCheckout.classList.remove("btn-checkout-attn"), 1600);
+    }
   }
 
   window.removeFromCart = function(id) {
@@ -773,7 +829,7 @@
               <strong style="display:block; margin-bottom:4px; color:var(--primary-dark);">${c.name}</strong>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <input type="number" min="1" value="${qty}" class="qty-input" onchange="window.updateCartQty(${c.id}, this.value)">
-                <span style="color:var(--text-muted); font-size: 11px;">x Rp 5.000</span>
+                <span style="color:var(--text-muted); font-size: 11px;">x Rp 10.000</span>
               </div>
             </div>
             <div style="text-align:right; display:flex; flex-direction:column; justify-content:space-between;">
@@ -933,7 +989,7 @@
 
   window.loginAdmin = function() {
     const pass = document.getElementById("admin-pass").value;
-    if (pass === "hairul635") {
+    if (pass === "king") {
       document.getElementById("admin-login-section").style.display = "none";
       document.getElementById("admin-dashboard-section").style.display = "block";
       renderAdminList();
